@@ -1,42 +1,41 @@
 #!/usr/bin/python3
-"""
-Write a script that starts a Flask web application:
-Your web application must be listening on 0.0.0.0, port 5000
-Routes:
-/: display Hello HBNB!
-/hbnb: display HBNB
-You must use the option strict_slashes=False in your route definition
-"""
-
-
-from flask import Flask, url_for
-
+""" Web application listening on 0.0.0.0, port 5000 """
+from flask import Flask
 
 app = Flask(__name__)
 
 
-@app.route("/", strict_slashes=False)
-def root_display():
+@app.route("/")
+def hello_hbnb():
+    """ Display Hello HBNB! """
     return "Hello HBNB!"
 
 
-@app.route("/hbnb", strict_slashes=False)
-def hbnb_display():
+@app.route("/hbnb")
+def hbnb():
+    """ Display HBNB! """
     return "HBNB"
 
 
-@app.route("/c/<text>", strict_slashes=False)
-def c_display(text):
-    text_str = " ".join(text.split("_"))
-    return "C {0}".format(text_str)
+@app.route("/c/<text>")
+def c_is_fun(text):
+    """
+    Display 'C' followed by the value of text
+    Replace underscore _ symbols with a space
+    """
+    return "C {}".format(text.replace("_", " "))
 
 
-@app.route("/python", strict_slashes=False)
-@app.route("/python/<text>", strict_slashes=False)
-def python_display(text="is cool"):
-    text_str = " ".join(text.split("_"))
-    return "Python {0}".format(text_str)
+@app.route("/python/")
+@app.route("/python/<text>")
+def python_is_cool(text="is cool"):
+    """
+    Display 'Python' followed by the value of text
+    Replace underscore _ symbols with a space
+    """
+    return "Python {}".format(text.replace("_", " "))
+
 
 if __name__ == "__main__":
-    # specify IP address and port number
     app.run(host="0.0.0.0", port=5000)
+    app.url_map.strict_slashes = False
