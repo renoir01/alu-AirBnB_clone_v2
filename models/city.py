@@ -1,24 +1,17 @@
-#!/usr/bin/python
-""" holds class City"""
-import models
+#!/usr/bin/python3
+""" City Module for HBNB project """
 from models.base_model import BaseModel, Base
-from os import getenv
-import sqlalchemy
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
+from models import storage_type
 
 
 class City(BaseModel, Base):
-    """Representation of city """
-    if models.storage_t == "db":
-        __tablename__ = 'cities'
-        state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-        name = Column(String(128), nullable=False)
-        places = relationship("Place", backref="cities")
-    else:
-        state_id = ""
-        name = ""
+    """ The city class, contains state ID and name """
+    __tablename__ = "cities"
+    __table_args__ = {'mysql_charset': 'latin1'}
 
-    def __init__(self, *args, **kwargs):
-        """initializes city"""
-        super().__init__(*args, **kwargs)
+    state_id = Column(String(60), ForeignKey('states.id'),  nullable=False)
+    name = Column(String(128), nullable=False)
+    if storage_type == 'db':
+        places = relationship("Place", backref='cities', cascade="all, delete")
